@@ -2,4 +2,7 @@
     <string name="app_name">LockIn</string>
     <string name="app_intro">Ayo belajar dengan timer!</string>
     <string name="app_countdown">Sisa waktu: %1$d detik</string>
+    <string name="app_setting">Pengaturan</string>
+    <string name="kembali">Kembali</string>
+    <string name="about">Tentang Aplikasi</string>
 </resources>

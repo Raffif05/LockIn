@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.raffifauzan0073.assesment1.navigation.SetupNavGraph
-import com.raffifauzan0073.assesment1.ui.screen.MainScreen
 import com.raffifauzan0073.assesment1.ui.theme.Assesment1Theme
 
 class MainActivity : ComponentActivity() {
@@ -27,6 +26,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     Assesment1Theme {
-        MainScreen()
+        SetupNavGraph()
     }
 }

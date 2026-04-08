@@ -6,15 +6,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
@@ -25,12 +27,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.raffifauzan0073.assesment1.R
+import com.raffifauzan0073.assesment1.navigation.Screen
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavHostController, initialMinute: Int = 25) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -40,23 +44,28 @@ fun MainScreen() {
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary
-                )
+                ),
+                actions = {
+                    IconButton(onClick = {
+                        navController.navigate(Screen.Setting.route)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Info,
+                            contentDescription = stringResource(R.string.about),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
             )
         }
     ) { innerPadding ->
-        ScreenContent(Modifier.padding(innerPadding))
+        ScreenContent(Modifier.padding(innerPadding), initialMinute = initialMinute)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenContent(modifier: Modifier = Modifier) {
-
-    val timerPickerState = rememberTimePickerState(
-        initialHour = 0,
-        initialMinute = 25,
-        is24Hour = true
-    )
+fun ScreenContent(modifier: Modifier = Modifier, initialMinute: Int) {
 
     var timeLeft by remember { mutableLongStateOf(0L) }
     var timer: CountDownTimer? by remember { mutableStateOf(null) }
@@ -83,7 +92,7 @@ fun ScreenContent(modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.bodyLarge
             )
 
-            TimeInput(state = timerPickerState)
+
 
             Text(
                 text = formattedTime,
@@ -93,10 +102,8 @@ fun ScreenContent(modifier: Modifier = Modifier) {
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    val hour = timerPickerState.hour
-                    val minute = timerPickerState.minute
 
-                    val totalTimeMillis = (hour * 60 + minute) * 60 * 1000L
+                    val totalTimeMillis = initialMinute * 60 * 1000L
 
                     timer?.cancel()
 
