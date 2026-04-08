@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LockIn</string>
+    <string name="app_intro">Ayo belajar!</string>
+    <string name="app_countdown">Sisa waktu: %1$d detik</string>
+    <string name="app_setting">Pengaturan</string>
+    <string name="kembali">Kembali</string>
+    <string name="about">Tentang Aplikasi</string>
+    <string name="set_time">Atur waktu sesuai yang kamu inginkan!</string>
+    <string name="simpan">Simpan</string>
+    <string name="theme">Mode Gelap</string>
+    <string name="start">Mulai</string>
+    <string name="reset">Reset</string>
+    <string name="save">Simpan</string>
+    <string name="mode_set">Pilih Mode</string>
+    <string name="pause">Berhenti</string>
+    <string name="belajar">Belajar</string>
+    <string name="istirahat">Istirahat</string>
+    <string name="share_template">Aku telah %1$s selama %2$d menit</string>
+    <string name="bagikan">Bagikan</string>
+    <string name="time_done">Waktu kamu telah habis!</string>
+    <string name="copyright">LockIn adalah aplikasi untuk mengatur waktu belajar menggunakan countdown timer, dilengkapi input waktu, hasil sesi, serta fitur berbagi hasil dan dukungan multi-bahasa yang dikembangkan menggunakan Android Studio.\n\nCopyright © 2024–2026 Raffif Auzan.\nAll right reserved.</string>
+</resources>

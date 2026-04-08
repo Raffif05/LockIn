@@ -1,14 +1,29 @@
 package com.raffifauzan0073.assesment1.ui.screen
 
+import android.content.Context
+import android.content.Intent
 import android.os.CountDownTimer
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,29 +37,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.raffifauzan0073.assesment1.R
+import com.raffifauzan0073.assesment1.model.Kegiatan
 import com.raffifauzan0073.assesment1.navigation.Screen
 import java.util.Locale
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.res.painterResource
-import com.raffifauzan0073.assesment1.model.Kegiatan
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -92,17 +97,12 @@ fun ScreenContent(modifier: Modifier = Modifier, initialMinute: Int) {
     var selectedKegiatan by remember { mutableStateOf(kegiatanList[0]) }
     var expanded by remember { mutableStateOf(false) }
     var isRunning by rememberSaveable { mutableStateOf(false) }
+    var showResult by rememberSaveable { mutableStateOf(false) }
 
-    val hours = timeLeft / 3600
+    val context = LocalContext.current
     val minutes = (timeLeft % 3600) / 60
     val seconds = timeLeft % 60
-    val formattedTime = String.format(
-        Locale.getDefault(),
-        "%02d:%02d:%02d",
-        hours,
-        minutes,
-        seconds
-    )
+    val formattedTime = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
 
         Column(
             modifier = modifier
@@ -132,8 +132,19 @@ fun ScreenContent(modifier: Modifier = Modifier, initialMinute: Int) {
                 Spacer(modifier = Modifier.width(12.dp))
 
                 Box {
-                    TextButton(onClick = { expanded = true }) {
-                        Text(selectedKegiatan.nama)
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                color = MaterialTheme.colorScheme.surfaceVariant,
+                                shape = MaterialTheme.shapes.medium
+                            )
+                            .clickable { expanded = true }
+                            .padding(horizontal = 16.dp, vertical = 10.dp)
+                    ) {
+                        Text(
+                            text = selectedKegiatan.nama,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
                     }
 
                     DropdownMenu(
@@ -197,6 +208,9 @@ fun ScreenContent(modifier: Modifier = Modifier, initialMinute: Int) {
                                 timeLeft = 0
                                 isRunning = false
                                 isStarted = false
+                                timer = null
+
+                                showResult = true
                             }
                         }.start()
 
@@ -219,5 +233,39 @@ fun ScreenContent(modifier: Modifier = Modifier, initialMinute: Int) {
             ) {
                 Text(stringResource(R.string.reset))
             }
+
+            if (showResult) {
+                Text(
+                    text = stringResource(R.string.time_done),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Button(
+                    onClick = {
+                        val mode = selectedKegiatan.nama
+                        val duration = initialMinute
+                        val message = context.getString(
+                            R.string.share_template,
+                            mode,
+                            duration
+                        )
+
+                        shareData(context, message)
+                    }
+                ) {
+                    Text(stringResource(R.string.bagikan))
+                }
+            }
         }
     }
+
+private fun shareData(context: Context, message: String) {
+    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TEXT, message)
+    }
+    if (shareIntent.resolveActivity(context.packageManager) != null) {
+        context.startActivity(shareIntent)
+    }
+}
