@@ -5,4 +5,7 @@
     <string name="app_setting">Pengaturan</string>
     <string name="kembali">Kembali</string>
     <string name="about">Tentang Aplikasi</string>
+    <string name="set_time">Atur waktu sesuai yang kamu inginkan!</string>
+    <string name="simpan">Simpan</string>
+    <string name="theme">Mode Gelap</string>
 </resources>

@@ -3,6 +3,7 @@ package com.raffifauzan0073.assesment1.ui.screen
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -13,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TopAppBar
@@ -31,7 +33,11 @@ import com.raffifauzan0073.assesment1.ui.theme.Assesment1Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingScreen(navController: NavHostController) {
+fun SettingScreen(
+    navController: NavHostController,
+    onThemeChange: (Boolean) -> Unit,
+    isDarkTheme: Boolean
+) {
     val timerPickerState = rememberTimePickerState(
         initialHour = 0,
         initialMinute = 25,
@@ -68,6 +74,12 @@ fun SettingScreen(navController: NavHostController) {
                 style = MaterialTheme.typography.bodyLarge
                 )
 
+            Text(
+                text = stringResource(R.string.set_time),
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.fillMaxWidth()
+            )
+
             TimeInput(state = timerPickerState)
             Button(
                 modifier = Modifier.fillMaxWidth(),
@@ -77,7 +89,20 @@ fun SettingScreen(navController: NavHostController) {
                     navController.navigate("mainScreen/$minute")
                 }
             ) {
-                Text("Save")
+                Text(stringResource(R.string.simpan))
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(stringResource(R.string.theme))
+
+                Switch(
+                    checked = isDarkTheme,
+                    onCheckedChange = { onThemeChange(it) }
+                )
             }
         }
 
@@ -89,6 +114,6 @@ fun SettingScreen(navController: NavHostController) {
 @Composable
 fun SettingScreenPreview() {
     Assesment1Theme() {
-        SettingScreen(rememberNavController())
+        SettingScreen(rememberNavController(), isDarkTheme = false, onThemeChange = {})
     }
 }

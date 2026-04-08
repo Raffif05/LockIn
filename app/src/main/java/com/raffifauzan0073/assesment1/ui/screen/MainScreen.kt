@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -50,7 +50,7 @@ fun MainScreen(navController: NavHostController, initialMinute: Int = 25) {
                         navController.navigate(Screen.Setting.route)
                     }) {
                         Icon(
-                            imageVector = Icons.Outlined.Info,
+                            imageVector = Icons.Outlined.Settings,
                             contentDescription = stringResource(R.string.about),
                             tint = MaterialTheme.colorScheme.primary
                         )

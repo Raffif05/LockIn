@@ -9,7 +9,10 @@ import com.raffifauzan0073.assesment1.ui.screen.MainScreen
 import com.raffifauzan0073.assesment1.ui.screen.SettingScreen
 
 @Composable
-fun SetupNavGraph(navController: NavHostController = rememberNavController()) {
+fun SetupNavGraph(
+    navController: NavHostController = rememberNavController(),
+    isDarkTheme: Boolean,
+    onThemeChange: (Boolean) -> Unit) {
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route
@@ -19,7 +22,10 @@ fun SetupNavGraph(navController: NavHostController = rememberNavController()) {
         }
 
         composable(route = Screen.Setting.route) {
-            SettingScreen(navController)
+            SettingScreen(
+                navController = navController,
+                isDarkTheme = isDarkTheme,
+                onThemeChange = onThemeChange)
         }
 
         composable("mainScreen/{minute}") { backStackEntry ->
